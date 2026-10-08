@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPC Control Charts V2 | Swiss International Typographic Style</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="swiss-theme">
+  <!-- Swiss Grid Precision Lines Overlay -->
+  <div class="swiss-grid-overlay"></div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="swiss-indicator">
+        <span class="swiss-cross">■</span>
+        <span class="indicator-text" data-i18n="badgeEngine">SWISS TYPOGRAPHIC GRID · STATISTICAL QUALITY CONTROL</span>
+      </div>
+      <h1 class="brand-title">
+        <span class="swiss-title-main" data-i18n="appTitle">SPC STATISTIK</span>
+        <span class="title-sub" data-i18n="appSub">PRECISION LAB V2</span>
+      </h1>
+      <p class="brand-desc" data-i18n="appDesc">Shewhart X-bar Control Charts, Nelson Rules Engine & Gaussian Process Capability (Cp/Cpk)</p>
+    </div>
+    
+    <div class="header-right">
+      <div class="swiss-status-pill">
+        <span class="ssp-label" data-i18n="statusLabel">STATE:</span>
+        <span class="ssp-val" id="processStateText">IN CONTROL</span>
+      </div>
+      <button id="langToggle" class="btn-swiss-sec">
+        <span id="langLabel">العربية</span>
+      </button>
+      <button id="exportReportBtn" class="btn-swiss-prim">
+        <span data-i18n="exportBtn">EXPORT AUDIT REPORT</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Swiss Presets Bar -->
+  <section class="swiss-panel presets-panel">
+    <div class="presets-container">
+      <div class="presets-title-block">
+        <span class="swiss-bullet">/ 01</span>
+        <span class="preset-label" data-i18n="presetsLabel">QUALITY REGIMES:</span>
+      </div>
+      <div class="preset-buttons">
+        <button class="preset-btn active" data-preset="six-sigma">
+          <span class="btn-idx">A</span>
+          <span data-i18n="presetSixSigma">Six Sigma Benchmark (Cpk = 1.67)</span>
+        </button>
+        <button class="preset-btn" data-preset="drift">
+          <span class="btn-idx">B</span>
+          <span data-i18n="presetDrift">Mean Shift / Tool Wear (Rule 2)</span>
+        </button>
+        <button class="preset-btn" data-preset="high-var">
+          <span class="btn-idx">C</span>
+          <span data-i18n="presetHighVar">Excess Variance (Rule 1 Out of Limits)</span>
+        </button>
+      </div>
+
+      <div class="action-btn-group">
+        <button id="generateSampleBtn" class="btn-swiss-accent">
+          <span data-i18n="sampleBtn">GENERATE SAMPLES</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Swiss Metric Cards Grid (Stark Precision) -->
+  <section class="kpi-grid">
+    <div class="kpi-card accent-orange">
+      <div class="kpi-header">
+        <span class="kpi-tag">01 / CPK</span>
+        <span class="kpi-label" data-i18n="kpiCpk">Process Capability (Cpk)</span>
+      </div>
+      <div class="kpi-val" id="kpiCpk">1.67</div>
+      <span class="kpi-sub" id="kpiCpkSub">World-class precision</span>
+    </div>
+
+    <div class="kpi-card accent-neutral">
+      <div class="kpi-header">
+        <span class="kpi-tag">02 / CP</span>
+        <span class="kpi-label" data-i18n="kpiCp">Process Potential (Cp)</span>
+      </div>
+      <div class="kpi-val" id="kpiCp">1.75</div>
+      <span class="kpi-sub" data-i18n="kpiCpSub">(USL - LSL) / 6σ</span>
+    </div>
+
+    <div class="kpi-card accent-alert">
+      <div class="kpi-header">
+        <span class="kpi-tag">03 / RULES</span>
+        <span class="kpi-label" data-i18n="kpiNelson">Nelson Rule Violations</span>
+      </div>
+      <div class="kpi-val" id="kpiNelson">0</div>
+      <span class="kpi-sub" id="kpiNelsonSub">Process in statistical control</span>
+    </div>
+
+    <div class="kpi-card accent-neutral">
+      <div class="kpi-header">
+        <span class="kpi-tag">04 / SIGMA</span>
+        <span class="kpi-label" data-i18n="kpiSigma">Estimated Sigma (σ)</span>
+      </div>
+      <div class="kpi-val" id="kpiSigma">0.52 mm</div>
+      <span class="kpi-sub" data-i18n="kpiSigmaSub">R-bar / d2 estimator</span>
+    </div>
+  </section>
+
+  <!-- Main Layout -->
+  <main class="studio-layout">
+    <!-- Left Column: Shewhart X-bar Control Chart -->
+    <section class="swiss-panel chart-main-panel">
+      <div class="panel-header">
+        <div>
+          <span class="panel-num">FIGURE A.01</span>
+          <h2 class="panel-title" data-i18n="shewhartTitle">Shewhart X-bar Run Chart</h2>
+          <p class="panel-desc" data-i18n="shewhartDesc">Sequential subgroup sample averages plotted against UCL, CL, and LCL.</p>
+        </div>
+        <div class="chart-legend-swiss">
+          <span class="cl-item cl-ucl">UCL (+3σ)</span>
+          <span class="cl-item cl-cl">CL (X-double-bar)</span>
+          <span class="cl-item cl-lcl">LCL (-3σ)</span>
+        </div>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="shewhartCanvas"></canvas>
+      </div>
+
+      <div class="panel-footer-stats">
+        <div class="pfs-col">
+          <span class="pfs-label">UCL:</span>
+          <span class="pfs-val" id="statUCL">51.56 mm</span>
+        </div>
+        <div class="pfs-col">
+          <span class="pfs-label">CL:</span>
+          <span class="pfs-val" id="statCL">50.00 mm</span>
+        </div>
+        <div class="pfs-col">
+          <span class="pfs-label">LCL:</span>
+          <span class="pfs-val" id="statLCL">48.44 mm</span>
+        </div>
+        <div class="pfs-col">
+          <span class="pfs-label" data-i18n="subgroupCount">SUBGROUPS:</span>
+          <span class="pfs-val" id="statSubgroups">25 (n=5)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Column: Gaussian Capability Bell Curve -->
+    <section class="swiss-panel gaussian-panel">
+      <div class="panel-header">
+        <div>
+          <span class="panel-num">FIGURE A.02</span>
+          <h2 class="panel-title" data-i18n="gaussTitle">Gaussian Capability Bell Curve</h2>
+          <p class="panel-desc" data-i18n="gaussDesc">Distribution of individual parts versus Upper and Lower Specification Limits.</p>
+        </div>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="gaussianCanvas"></canvas>
+      </div>
+
+      <div class="spec-limits-box">
+        <div class="spec-row">
+          <span class="spec-name">LSL (Lower Spec):</span>
+          <span class="spec-val">47.00 mm</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-name">Nominal Target:</span>
+          <span class="spec-val">50.00 mm</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-name">USL (Upper Spec):</span>
+          <span class="spec-val">53.00 mm</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Detailed Tabbed Analysis -->
+  <section class="swiss-panel detailed-section">
+    <div class="tabs-header">
+      <button class="tab-btn active" data-tab="tabNelson">
+        <span class="tab-index">[01]</span>
+        <span data-i18n="tabNelson">Nelson 8-Rule Diagnostic Matrix</span>
+      </button>
+      <button class="tab-btn" data-tab="tabData">
+        <span class="tab-index">[02]</span>
+        <span data-i18n="tabData">Raw Subgroup Inspection Table (n=5)</span>
+      </button>
+      <button class="tab-btn" data-tab="tabActions">
+        <span class="tab-index">[03]</span>
+        <span data-i18n="tabActions">Corrective Engineering Action Protocol</span>
+      </button>
+    </div>
+
+    <div class="tabs-content">
+      <!-- Tab 1: Nelson Rules -->
+      <div class="tab-pane active" id="tabNelson">
+        <div class="rules-grid" id="rulesGrid">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Tab 2: Subgroups Data -->
+      <div class="tab-pane" id="tabData">
+        <div class="table-responsive">
+          <table class="data-table" id="subgroupTable">
+            <!-- Injected by JS -->
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Action Protocol -->
+      <div class="tab-pane" id="tabActions">
+        <div class="protocol-box" id="protocolBox">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-left">
+      <span class="swiss-dot"></span>
+      <span data-i18n="footerStatus">SWISS INTERNATIONAL TYPOGRAPHIC SYSTEM · INDUSTRIAL SPC ENGINE V2</span>
+    </div>
+    <div class="footer-right">
+      <span>Tareq0001 · Quality Engineering Suite</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
